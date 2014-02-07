@@ -10,6 +10,8 @@ public class Earth {
 			Thread raidThread = new Thread(runnable);
 			raidThread.start();
 			System.in.read();
+
+			runnable.abort();
 		} catch (IOException e) {
 			System.err.println("Caught: " + e);
 			e.printStackTrace();

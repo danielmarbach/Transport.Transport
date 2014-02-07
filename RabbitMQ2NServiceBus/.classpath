@@ -4,6 +4,10 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="lib" path="libs/commons-cli-1.1.jar"/>
 	<classpathentry kind="lib" path="libs/commons-io-1.2.jar"/>
-	<classpathentry kind="lib" path="libs/rabbitmq-client.jar"/>
+	<classpathentry kind="lib" path="libs/rabbitmq-client.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="http://www.rabbitmq.com/releases/rabbitmq-java-client/v3.1.5/rabbitmq-java-client-javadoc-3.1.5/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
