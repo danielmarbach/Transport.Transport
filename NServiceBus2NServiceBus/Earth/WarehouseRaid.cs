@@ -2,16 +2,14 @@
 
 namespace Earth
 {
-    using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Messages;
     using Messages.Events;
 
     using NServiceBus;
 
-    public class GangWar : IWantToRunWhenBusStartsAndStops
+    public class WarehouseRaid : IWantToRunWhenBusStartsAndStops
     {
         private CancellationTokenSource tokenSource = new CancellationTokenSource();
 

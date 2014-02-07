@@ -48,7 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GangWar.cs" />
+    <Compile Include="WarehouseRaid.cs" />
     <Compile Include="EndpointConfig.cs" />
     <Compile Include="HuntDeadosOnEarthHandler.cs" />
     <Compile Include="PoliceOfficerDiedHandler.cs" />
