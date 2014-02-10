@@ -1,47 +1,56 @@
 package ch.danielmarbach.activemq2nservicebus;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 import javax.jms.Connection;
-import javax.jms.DeliveryMode;
-import javax.jms.Destination;
-import javax.jms.MessageProducer;
 import javax.jms.Session;
-import javax.jms.TextMessage;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 public class Earth {
 
-	public static void main(String args[]) throws Throwable {
-		ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
-				"vm://localhost");
+	public static void main(String args[]) {
+		Connection connection = null;
+		try {
+			ExecutorService executor = Executors.newFixedThreadPool(10);
 
-		// Create a Connection
-		Connection connection = connectionFactory.createConnection();
-		connection.start();
+			ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
+					"failover:(tcp://brokers:61616,tcp://brokers:61616)?randomize=false");
 
-		// Create a Session
-		Session session = connection.createSession(false,
-				Session.AUTO_ACKNOWLEDGE);
+			connection = connectionFactory.createConnection();
+			connection.start();
 
-		// Create the destination (Topic or Queue)
-		Destination destination = session.createQueue("TEST.FOO");
+			System.out.println("ActiveMQ: Starting Warehouse raid...");
 
-		// Create a MessageProducer from the Session to the Topic or Queue
-		MessageProducer producer = session.createProducer(destination);
-		producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+			// Create a Session
+			EarthConsumer consumer = new EarthConsumer(
+					connection.createSession(false, Session.AUTO_ACKNOWLEDGE));
+			consumer.start();
+			WarehouseRaid warehouse = new WarehouseRaid(
+					connection.createSession(false, Session.AUTO_ACKNOWLEDGE));
+			executor.execute(warehouse);
 
-		// Create a messages
-		String text = "Hello world! From: " + Thread.currentThread().getName()
-				+ " : ";
-		TextMessage message = session.createTextMessage(text);
+			System.out.println("ActiveMQ: Press any key to abort raid...");
+			System.in.read();
 
-		// Tell the producer to send the message
-		System.out.println("Sent message: " + message.hashCode() + " : "
-				+ Thread.currentThread().getName());
-		producer.send(message);
+			warehouse.abort();
 
-		// Clean up
-		session.close();
-		connection.close();
+			executor.shutdown();
+			executor.awaitTermination(5000, TimeUnit.MILLISECONDS);
+
+			System.out.println("ActiveMQ: Shutting down...");
+
+		} catch (Exception e) {
+			System.err.println("Caught: " + e);
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
