@@ -9,7 +9,7 @@ namespace Earth
             Configure.With()
                 .DefiningEventsAs(t => t.Namespace != null && t.Namespace.StartsWith("Messages.Events"))
                 .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("Messages.Commands"))
-                .RavenSubscriptionStorage();
+                .UseInMemoryTimeoutPersister();
         }
     }
 }

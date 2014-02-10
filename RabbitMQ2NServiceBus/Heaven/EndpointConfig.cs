@@ -10,7 +10,7 @@ namespace Heaven
                 .DefiningEventsAs(t => t.Namespace != null && t.Namespace.StartsWith("Messages.Events"))
                 .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("Messages.Commands"))
                 .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.StartsWith("Messages.Messages"))
-                .RavenSubscriptionStorage();
+                .UseInMemoryTimeoutPersister();
         }
     }
 }
