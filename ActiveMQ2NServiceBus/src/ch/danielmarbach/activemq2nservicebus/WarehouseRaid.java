@@ -11,26 +11,25 @@ import javax.jms.TextMessage;
 
 public class WarehouseRaid implements Runnable {
 
-	private final Session _session;
+	private final Session session;
 	private volatile boolean run = true;
 
 	public WarehouseRaid(Session session) {
-		_session = session;
+		this.session = session;
 	}
 
 	@Override
 	public void run() {
 		try {
 			int numberOfOfficers = 1;
-			Destination queue = _session.createQueue("Earth");
-			Destination destination = _session
-					.createTopic("VirtualTopic.Messages.Events.PoliceOfficerDied");
+			session.createQueue(Constants.QUEUE_NAME);
+			Destination destination = session.createTopic(Constants.TOPIC_NAME);
 
 			while (run) {
 
 				// Create a MessageProducer from the Session to the Topic or
 				// Queue
-				MessageProducer producer = _session.createProducer(destination);
+				MessageProducer producer = session.createProducer(destination);
 				producer.setDeliveryMode(DeliveryMode.PERSISTENT);
 
 				String message = String
@@ -41,7 +40,7 @@ public class WarehouseRaid implements Runnable {
 								+ "</PoliceOfficerDied>", UUID.randomUUID()
 								.toString(), numberOfOfficers++);
 
-				TextMessage textMessage = _session.createTextMessage(message);
+				TextMessage textMessage = session.createTextMessage(message);
 				producer.send(textMessage);
 
 				Thread.sleep(5000);
@@ -50,10 +49,9 @@ public class WarehouseRaid implements Runnable {
 		} catch (Exception e) {
 			System.err.println("WarehouseRaid thread caught exception: " + e);
 			e.printStackTrace();
-			System.exit(1);
 		} finally {
 			try {
-				_session.close();
+				session.close();
 			} catch (JMSException e) {
 				e.printStackTrace();
 			}

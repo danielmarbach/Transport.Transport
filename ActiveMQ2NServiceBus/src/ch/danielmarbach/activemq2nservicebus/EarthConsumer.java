@@ -2,6 +2,7 @@ package ch.danielmarbach.activemq2nservicebus;
 
 import java.util.ArrayList;
 
+import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 import javax.jms.Queue;
@@ -9,28 +10,38 @@ import javax.jms.Session;
 
 public class EarthConsumer {
 
-	private final ArrayList<MessageConsumer> _consumers;
-	private final Session _session;
+	private final ArrayList<MessageConsumer> consumers;
+	private final Session session;
 
 	public EarthConsumer(Session session) {
-		_session = session;
-		_consumers = new ArrayList<MessageConsumer>();
+		this.session = session;
+		consumers = new ArrayList<MessageConsumer>();
 	}
 
 	public void start() throws JMSException {
-		Queue policeOfficerDiedQueue = _session
-				.createQueue("Consumer.Earth.VirtualTopic.Messages.Events.PoliceOfficerDied");
+		Queue policeOfficerDiedQueue = session.createQueue(String.format(
+				"Consumer.%s.%s", Constants.QUEUE_NAME, Constants.TOPIC_NAME));
 
-		MessageConsumer policeOfficerDiedConsumer = _session
+		MessageConsumer policeOfficerDiedConsumer = session
 				.createConsumer(policeOfficerDiedQueue);
 		policeOfficerDiedConsumer
-				.setMessageListener(new PoliceOfficerDiedHandler());
+				.setMessageListener(new PoliceOfficerDiedHandler(session));
 
-		_consumers.add(policeOfficerDiedConsumer);
+		consumers.add(policeOfficerDiedConsumer);
+
+		Destination huntDeadosOnEarth = session
+				.createQueue(Constants.QUEUE_NAME);
+
+		MessageConsumer huntDeadosOnEarthConsumer = session
+				.createConsumer(huntDeadosOnEarth);
+		huntDeadosOnEarthConsumer
+				.setMessageListener(new HuntDeadosOnEarthHandler());
+
+		consumers.add(huntDeadosOnEarthConsumer);
 	}
 
-	public void stop() throws JMSException {
-		for (MessageConsumer consumer : _consumers) {
+	public void stop() {
+		for (MessageConsumer consumer : consumers) {
 			try {
 				consumer.close();
 			} catch (JMSException exception) {
