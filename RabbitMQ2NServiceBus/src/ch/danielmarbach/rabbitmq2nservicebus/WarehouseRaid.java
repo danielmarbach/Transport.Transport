@@ -10,21 +10,19 @@ import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.Channel;
 
 public class WarehouseRaid implements Runnable {
-	private final Channel _channel;
+	private final Channel channel;
 	private volatile boolean run = true;
 
 	public WarehouseRaid(Channel channel) {
-		_channel = channel;
+		this.channel = channel;
 	}
 
 	@Override
 	public void run() {
 		try {
-			_channel.queueDeclare(Constants.QUEUE_NAME, true, false, false,
-					null);
-			_channel.exchangeDeclare(Constants.EXCHANGE_NAME, "fanout", true);
-			_channel.queueBind(Constants.QUEUE_NAME, Constants.EXCHANGE_NAME,
-					"");
+			channel.queueDeclare(Constants.QUEUE_NAME, true, false, false, null);
+			channel.exchangeDeclare(Constants.EXCHANGE_NAME, "fanout", true);
+			channel.queueBind(Constants.QUEUE_NAME, Constants.EXCHANGE_NAME, "");
 
 			int numberOfOfficers = 1;
 
@@ -45,7 +43,7 @@ public class WarehouseRaid implements Runnable {
 								+ "</PoliceOfficerDied>", UUID.randomUUID()
 								.toString(), numberOfOfficers++);
 
-				_channel.basicPublish(Constants.EXCHANGE_NAME, "", props,
+				channel.basicPublish(Constants.EXCHANGE_NAME, "", props,
 						message.getBytes());
 
 				Thread.sleep(5000);
@@ -54,10 +52,9 @@ public class WarehouseRaid implements Runnable {
 		} catch (Exception e) {
 			System.err.println("WarehouseRaid thread caught exception: " + e);
 			e.printStackTrace();
-			System.exit(1);
 		} finally {
 			try {
-				_channel.close();
+				channel.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

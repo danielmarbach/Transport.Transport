@@ -10,36 +10,36 @@ import com.rabbitmq.client.Envelope;
 
 public class EarthConsumer {
 
-	private final Channel _channel;
-	private final HashMap<String, HandleMessages> _handlers;
+	private final Channel channel;
+	private final HashMap<String, HandleMessages> handlers;
 
 	public EarthConsumer(Channel channel,
 			HashMap<String, HandleMessages> handlers) {
-		_channel = channel;
-		_handlers = handlers;
+		this.channel = channel;
+		this.handlers = handlers;
 	}
 
 	public void start() throws IOException {
-		_channel.queueDeclare(Constants.QUEUE_NAME, true, false, false, null);
-		_channel.basicQos(1);
-		_channel.basicConsume(Constants.QUEUE_NAME, true, "EarthConsumer",
-				new DefaultConsumer(_channel) {
+		channel.queueDeclare(Constants.QUEUE_NAME, true, false, false, null);
+		channel.basicQos(1);
+		channel.basicConsume(Constants.QUEUE_NAME, true, "EarthConsumer",
+				new DefaultConsumer(channel) {
 					@Override
 					public void handleDelivery(String consumerTag,
 							Envelope envelope, AMQP.BasicProperties properties,
 							byte[] body) throws IOException {
 
 						String exchange = envelope.getExchange();
-						if (_handlers.containsKey(exchange)) {
-							_handlers.get(exchange).handle(_channel,
-									properties, body);
+						if (handlers.containsKey(exchange)) {
+							handlers.get(exchange).handle(channel, properties,
+									body);
 						}
 					}
 				});
 	}
 
 	public void stop() throws IOException {
-		_channel.basicCancel("EarthConsumer");
+		channel.basicCancel("EarthConsumer");
 	}
 
 }
