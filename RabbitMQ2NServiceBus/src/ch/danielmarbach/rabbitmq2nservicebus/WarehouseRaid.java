@@ -21,8 +21,14 @@ public class WarehouseRaid implements Runnable {
 	public void run() {
 		try {
 			channel.queueDeclare(Constants.QUEUE_NAME, true, false, false, null);
-			channel.exchangeDeclare(Constants.EXCHANGE_NAME, "fanout", true);
-			channel.queueBind(Constants.QUEUE_NAME, Constants.EXCHANGE_NAME, "");
+			channel.exchangeDeclare(Constants.EARTH_EXCHANGE_NAME, "fanout",
+					true);
+			channel.exchangeDeclare(
+					Constants.POLICE_OFFICER_DIED_EXCHANGE_NAME, "fanout", true);
+			channel.queueBind(Constants.QUEUE_NAME,
+					Constants.EARTH_EXCHANGE_NAME, "");
+			channel.queueBind(Constants.QUEUE_NAME,
+					Constants.POLICE_OFFICER_DIED_EXCHANGE_NAME, "");
 
 			int numberOfOfficers = 1;
 
@@ -43,7 +49,8 @@ public class WarehouseRaid implements Runnable {
 								+ "</PoliceOfficerDied>", UUID.randomUUID()
 								.toString(), numberOfOfficers++);
 
-				channel.basicPublish(Constants.EXCHANGE_NAME, "", props,
+				channel.basicPublish(
+						Constants.POLICE_OFFICER_DIED_EXCHANGE_NAME, "", props,
 						message.getBytes());
 
 				Thread.sleep(5000);

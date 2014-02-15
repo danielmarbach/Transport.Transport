@@ -21,6 +21,9 @@ public class EarthConsumer {
 
 	public void start() throws IOException {
 		channel.queueDeclare(Constants.QUEUE_NAME, true, false, false, null);
+		channel.queueDeclare(Constants.HEAVEN_QUEUE_NAME, true, false, false,
+				null);
+
 		channel.basicQos(1);
 		channel.basicConsume(Constants.QUEUE_NAME, true, "EarthConsumer",
 				new DefaultConsumer(channel) {

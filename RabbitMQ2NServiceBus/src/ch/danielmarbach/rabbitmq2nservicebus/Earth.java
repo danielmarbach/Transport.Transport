@@ -25,7 +25,7 @@ public class Earth {
 			WarehouseRaid warehouse = new WarehouseRaid(
 					connection.createChannel());
 			HashMap<String, HandleMessages> handlers = new HashMap<String, HandleMessages>();
-			handlers.put(Constants.EXCHANGE_NAME,
+			handlers.put(Constants.POLICE_OFFICER_DIED_EXCHANGE_NAME,
 					new PoliceOfficerDiedHandler());
 			handlers.put(Constants.QUEUE_NAME, new HuntDeadosOnEarthHandler());
 
