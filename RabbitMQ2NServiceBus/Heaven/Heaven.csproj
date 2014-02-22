@@ -90,4 +90,7 @@
     <StartAction>Program</StartAction>
     <StartProgram>$(ProjectDir)$(OutputPath)NServiceBus.Host.exe</StartProgram>
   </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>xcopy "$(SolutionDir)..\License.xml" "$(TargetDir)License\" /Y</PreBuildEvent>
+  </PropertyGroup>
 </Project>
