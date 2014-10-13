@@ -2,14 +2,15 @@ namespace Earth
 {
     using NServiceBus;
 
-    public class EndpointConfig : IConfigureThisEndpoint, AsA_Server, INeedInitialization, UsingTransport<RabbitMQ>
+    public class EndpointConfig : IConfigureThisEndpoint, AsA_Server, UsingTransport<RabbitMQTransport>
     {
-        public void Init()
+        public void Customize(BusConfiguration configuration)
         {
-            Configure.With()
+            configuration.Conventions()
                 .DefiningEventsAs(t => t.Namespace != null && t.Namespace.StartsWith("Messages.Events"))
-                .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("Messages.Commands"))
-                .UseInMemoryTimeoutPersister();
+                .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("Messages.Commands"));
+
+            configuration.UsePersistence<InMemoryPersistence>();
         }
     }
 }
