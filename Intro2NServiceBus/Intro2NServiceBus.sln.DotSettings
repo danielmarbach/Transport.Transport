@@ -22,8 +22,7 @@
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=64C45CE46527CC428B7D70A7A30D5AC6/Text/@EntryValue">                &#xD;
 				&#xD;
 				&#xD;
-				.InMemorySubscriptionStorage()&#xD;
-                .UseInMemoryTimeoutPersister();</s:String>
+				configuration.UsePersistence&lt;InMemoryPersistence&gt;();</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6E92A06717B5E9429387EBBC37347FE4/@KeyIndexDefined">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6E92A06717B5E9429387EBBC37347FE4/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6E92A06717B5E9429387EBBC37347FE4/Reformat/@EntryValue">True</s:Boolean>
@@ -70,7 +69,7 @@
 	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=892E35B4E7E41A44BBDA633EFD0FF8CE/Field/=StartsWithEventNamespace/Order/@EntryValue">0</s:Int64>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=892E35B4E7E41A44BBDA633EFD0FF8CE/Shortcut/@EntryValue">econfig1</s:String>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=892E35B4E7E41A44BBDA633EFD0FF8CE/Description/@EntryValue">Endpoint Configuration Step 1</s:String>
-	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=892E35B4E7E41A44BBDA633EFD0FF8CE/Text/@EntryValue">            Configure.With()&#xD;
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=892E35B4E7E41A44BBDA633EFD0FF8CE/Text/@EntryValue">            configuration.Conventions()&#xD;
                 .DefiningEventsAs(t =&gt; t.Namespace != null &amp;&amp; $StartsWithEventNamespace$)</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=892E35B4E7E41A44BBDA633EFD0FF8CE/Reformat/@EntryValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=892E35B4E7E41A44BBDA633EFD0FF8CE/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
