@@ -1,7 +1,6 @@
-﻿using System;
-
-namespace Earth
+﻿namespace Earth
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -11,7 +10,7 @@ namespace Earth
 
     public class WarehouseRaid : IWantToRunWhenBusStartsAndStops
     {
-        private CancellationTokenSource tokenSource = new CancellationTokenSource();
+        private readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
 
         private Task task;
 
@@ -31,13 +30,14 @@ namespace Earth
                         {
                             Guid identification = Guid.NewGuid();
 
-                            var policeOfficerDied = this.Bus.CreateInstance<PoliceOfficerDied>(
-                                m =>
-                                    {
-                                        m.Identification = identification;
-                                        m.Name = string.Format("Nick Walker the {0}th", numberOfOfficers++);
-                                    });
-                            this.Bus.Publish(policeOfficerDied);
+                            PoliceOfficerDied policeOfficerDied = null;
+                            this.Bus.Publish<PoliceOfficerDied>(m =>
+                            {
+                                m.Identification = identification;
+                                m.Name = string.Format("Nick Walker the {0}th", numberOfOfficers++);
+
+                                policeOfficerDied = m;
+                            });
 
                             this.Bus.Defer(TimeSpan.FromSeconds(10), policeOfficerDied);
 

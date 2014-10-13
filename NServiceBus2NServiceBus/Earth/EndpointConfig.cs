@@ -1,15 +1,17 @@
 namespace Earth
 {
     using NServiceBus;
+    using NServiceBus.Persistence;
 
-    public class EndpointConfig : IConfigureThisEndpoint, AsA_Server, INeedInitialization
+    public class EndpointConfig : IConfigureThisEndpoint, AsA_Server
     {
-        public void Init()
+        public void Customize(BusConfiguration configuration)
         {
-            Configure.With()
+            configuration.Conventions()
                 .DefiningEventsAs(t => t.Namespace != null && t.Namespace.StartsWith("Messages.Events"))
-                .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("Messages.Commands"))
-                .RavenSubscriptionStorage();
+                .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("Messages.Commands"));
+
+            configuration.UsePersistence<RavenDBPersistence>();
         }
     }
 }
