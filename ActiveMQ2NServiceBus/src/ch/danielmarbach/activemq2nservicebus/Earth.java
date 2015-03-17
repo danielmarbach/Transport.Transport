@@ -17,7 +17,7 @@ public class Earth {
 			ExecutorService executor = Executors.newFixedThreadPool(10);
 
 			ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
-					"failover:(tcp://brokers:61616,tcp://brokers:61616)?randomize=false");
+					"failover:(tcp://localhost:61616,tcp://localhost:61616)?randomize=false");
 
 			connection = connectionFactory.createConnection();
 			connection.start();
