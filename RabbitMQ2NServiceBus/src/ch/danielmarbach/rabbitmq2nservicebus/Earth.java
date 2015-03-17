@@ -17,7 +17,7 @@ public class Earth {
 			ExecutorService executor = Executors.newFixedThreadPool(10);
 
 			ConnectionFactory factory = new ConnectionFactory();
-			factory.setUri("amqp://brokers:5672");
+			factory.setUri("amqp://localhost:5672");
 			connection = factory.newConnection();
 
 			System.out.println("RabbitMQ: Starting Warehouse raid...");

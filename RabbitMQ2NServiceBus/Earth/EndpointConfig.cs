@@ -10,6 +10,8 @@ namespace Earth
                 .DefiningEventsAs(t => t.Namespace != null && t.Namespace.StartsWith("Messages.Events"))
                 .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("Messages.Commands"));
 
+            configuration.EnableInstallers();
+
             configuration.UsePersistence<InMemoryPersistence>();
         }
     }

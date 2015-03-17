@@ -11,6 +11,8 @@ namespace Heaven
                 .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("Messages.Commands"))
                 .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.StartsWith("Messages.Messages"));
 
+            configuration.EnableInstallers();
+
 	        configuration.UsePersistence<InMemoryPersistence>();
 	    }
 	}
